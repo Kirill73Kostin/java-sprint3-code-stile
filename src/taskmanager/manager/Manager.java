@@ -50,36 +50,7 @@ public class Manager {
         epicMap.put(epic.getId(), epic);
     }
 
-    private void updateEpicStatus(Epic epic) {
-        int n = 0;
-        int done = 0;
-        if ((epic.getSubtaskIds() == null) || (subtaskMap.size() == 0)) {
-            epic.setStatus(Status.NEW);
-        } else {
 
-            for (Integer subtaskId : epic.getSubtaskIds()) {
-                Subtask curSub = subtaskMap.get(subtaskId);
-                if (curSub.getStatus() == Status.IN_PROGRESS) {
-                    epic.setStatus(Status.IN_PROGRESS);
-                }
-                if (curSub.getStatus() == Status.NEW) {
-                    n += 1;
-                }
-                if (curSub.getStatus() == Status.DONE) {
-                    done += 1;
-                }
-            }
-        }
-        if (epic.getSubtaskIdsSize() == n) {
-            epic.setStatus(Status.NEW);
-        } else {
-            if (epic.getSubtaskIdsSize() == done) {
-                epic.setStatus(Status.DONE);
-            } else {
-                epic.setStatus(Status.IN_PROGRESS);
-            }
-        }
-    }
 
     public void updateSubtask(Subtask subtask) {
         subtaskMap.put(subtask.getId(), subtask);
@@ -163,6 +134,37 @@ public class Manager {
         task.setId(nextId);
         nextId++;
         return nextId;
+    }
+
+    private void updateEpicStatus(Epic epic) {
+        int n = 0;
+        int done = 0;
+        if ((epic.getSubtaskIds() == null) || (subtaskMap.size() == 0)) {
+            epic.setStatus(Status.NEW);
+        } else {
+
+            for (Integer subtaskId : epic.getSubtaskIds()) {
+                Subtask curSub = subtaskMap.get(subtaskId);
+                if (curSub.getStatus() == Status.IN_PROGRESS) {
+                    epic.setStatus(Status.IN_PROGRESS);
+                }
+                if (curSub.getStatus() == Status.NEW) {
+                    n += 1;
+                }
+                if (curSub.getStatus() == Status.DONE) {
+                    done += 1;
+                }
+            }
+        }
+        if (epic.getSubtaskIdsSize() == n) {
+            epic.setStatus(Status.NEW);
+        } else {
+            if (epic.getSubtaskIdsSize() == done) {
+                epic.setStatus(Status.DONE);
+            } else {
+                epic.setStatus(Status.IN_PROGRESS);
+            }
+        }
     }
 
 }
